@@ -28,6 +28,7 @@ def show_example():
     """
     return requirements, title, word_count, content
 
+st.set_page_config(page_title="学生作文批改")
 st.title("小学作文批改")
 st.image('figure/study.jpg', width=350)
 
