@@ -14,7 +14,8 @@ def start_mark():
     st.session_state['marking'] = 'working'
     st.session_state['history'] = []
     st.session_state['evaluation'] = []
-def show_example():
+
+def show_example1():
     requirements = '无'
     title = '我的姐姐'
     word_count = 300
@@ -25,6 +26,19 @@ def show_example():
     喊她吃饭也不起，她想吃的东西通常活不过第二天，回奶奶家想吃鸡肉，想就一直说鸡啄她，鸡当天晚上就上桌了。
     现在每天晚上除了写作业，还得给她写一篇作文。她现在正跟鬼一样追在我后面问：“写完没？写完没？这么慢，打电报都比你快，这不行，得扣钱！谁都别想阻止我出道！”
     唉，我是真的真的很无语。
+    """
+    return requirements, title, word_count, content
+
+def show_example2():
+    requirements = '无'
+    title = '我的老师'
+    word_count = 600
+    content = """
+    她让我最难忘的，应该算是本学期的第一节美术课了。说到这儿，你也许并不觉得会有什么稀奇，老师无非就是做个自我介绍，然后让我们画幅画，互相了解一下罢了。可这个陈老师不同，她穿着一件色彩极其鲜艳的衣服进了教室，接着又东看看西瞧瞧，忽然像发现了新大陆似的盯准了一堵墙，问我们：“谁来说说，这是什么颜色？”我们莫明其妙地望着陈老师，心想：这恐怕是问给3岁小孩的问题吧，是不是我们听错了？要不，准是老师走错地方了！
+    “怎么没人回答呢？”老师虽然还是带着笑意在问，但看得出她的脸上渗出了一点失望的表情。
+    我们这才齐声答道：“白色！”这么幼稚的问题，居然让老师一阵冷笑后，含着万分神秘的色彩，悄声对我们说：“再仔细想想。”老师这么一说，显然是我们答错了，可怎么会呢？全班同学都只好微微地摇摇头，静静地听老师讲解。陈老师先让一个穿着蓝颜色衣服的同学站到墙前面，说：“你们好好观察一下，除了白色，还有什么颜色？”“蓝色！”我们猜测到。　　
+    陈老师淡淡一笑，点点头，又说：“如果一个穿黄色衣服的同学站在这儿，你们想想，墙上还有什么颜色？”噢，我明白了，墙要受其它物体颜色的影响，任何物体都一样，它的颜色并不是单纯的。同时，我也知道陈老师为什么要问那个所谓幼稚的问题了。接着，她给我们叙述了她遇到过的许多趣事。在一阵阵笑声中，我学到了很多东西，以及陈老师的教学原则。　　
+    每节课，陈老师都会用不同的方式来吸引我们，让人倍感亲切，又觉得她高深莫测，因为谁也不知道这个怪老师还会有啥怪招儿！
     """
     return requirements, title, word_count, content
 
@@ -78,18 +92,25 @@ if st.session_state['marking'] == 'working':
 
             # 每个form都需要一个按钮来提交表单
             submit_button = st.form_submit_button(label='提交')
-            example_button = st.form_submit_button(label='示例批改')
+            example1_button = st.form_submit_button(label='示例批改1')
+            example2_button = st.form_submit_button(label='示例批改2')
             # st.session_state['history'] = [requirements_input, title_input, word_count_input, content_input]
+    temp = 0
     if submit_button:
         st.session_state['marking'] = 'submitted'
+        temp = 1
+    elif example1_button:
+        st.session_state['marking'] = 'submitted'
+        requirements_input, title_input, word_count_input, content_input = show_example1()
+        temp = 1
+    elif example2_button:
+        st.session_state['marking'] = 'submitted'
+        requirements_input, title_input, word_count_input, content_input = show_example2()
+        temp = 1
+
+    if temp:
         get_evaluation(requirements_input, title_input, word_count_input, content_input)
         submit_func(requirements_input, title_input, word_count_input, content_input)
-        st.experimental_rerun()
-    elif example_button:
-        st.session_state['marking'] = 'submitted'
-        requirements, title, word_count, content = show_example()
-        get_evaluation(requirements, title, word_count, content)
-        submit_func(requirements, title, word_count, content)
         st.experimental_rerun()
 
 elif st.session_state['marking'] == 'submitted':
