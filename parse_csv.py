@@ -27,13 +27,3 @@ class Parse_CSV:
     def get_note_data(self):
         return self.notes_data
 
-# p = Parse_CSV()
-# for item in p.get_note_data():
-#     print('------------------')
-#     print(item)
-#     print('------------------')
-
-# data = p.get_csv_data()[1:]
-# data = [item[2:] for item in data]
-# print(data[:5])
-# print(type(data))
