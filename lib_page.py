@@ -65,3 +65,12 @@ def show():
                 article_index = st.selectbox("选择周记编号", (range(1, len(article_data) + 1)))
                 if st.form_submit_button(label='查看'):
                     st.markdown(f"**周记正文:** \n\n{article_data[article_index - 1]}")
+
+                if st.form_submit_button(label='批改'):
+                    st.write("正在批改...")
+
+                    lib_eval('', '', 0, article_data[article_index - 1])
+                    st.session_state['history'] = ['', '', 0, article_data[article_index - 1]]
+                    st.session_state['page'] = 'eval'
+                    st.session_state['marking'] = 'submitted'
+                    st.experimental_rerun()

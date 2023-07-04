@@ -50,6 +50,52 @@ def print_article_evaluation():
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理由：{v['理由']}")
 
 
+
+def print_note_evaluation():
+    response = st.session_state['evaluation']
+    st.markdown(f"*主要内容:*  {response['主要内容']}")
+    st.markdown(f"*亮点:*  {response['亮点']}")
+    st.markdown(f"*错别字:*  ")
+    if response['错别字']['错别字总数']:
+        for i in range(1, response['错别字']['错别字总数'] + 1):
+            st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{i}:")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错别字：{response['错别字']['错别字内容'][str(i)]['错别字']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原句：{response['错别字']['错别字内容'][str(i)]['原句']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确字：{response['错别字']['错别字内容'][str(i)]['正确字']}")
+    st.markdown(f"*病句:*  ")
+    if response['病句']['病句总数']:
+        for i in range(1, response['病句']['病句总数'] + 1):
+            st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{i}:")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病句内容：{response['病句']['病句内容'][str(i)]['病句内容']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病句问题：{response['病句']['病句内容'][str(i)]['病句问题']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改意见：{response['病句']['病句内容'][str(i)]['修改意见']}")
+    st.markdown(f"*好句:* ")
+    if response['好句']['好句总数']:
+        for i in range(1, response['好句']['好句总数'] + 1):
+            st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{i}:")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好句内容：{response['好句']['好句内容'][str(i)]['好句内容']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点评：{response['好句']['好句内容'][str(i)]['点评']}")
+    st.markdown(f"*全文点评:*  {response['点评']}")
+    st.markdown("*评分:*")
+
+    total_score = sum([i['评分'] for i in response['评分'].values()])
+    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score}")
+    for k, v in response['评分'].items():
+        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{k}:")
+        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / 20")
+        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理由：{v['理由']}")
+
+
+
+
 def count_words(content):
     return len(content)
 
@@ -61,7 +107,8 @@ def submit_func(requirements, title, word_count, content):
         st.markdown(f"**作文类型:** 周记")
         st.markdown(f"**作文正文:** {content}")
         st.markdown('**作文评价:**')
-        st.write('内容正在推出中...')
+        print_note_evaluation()
+        # st.write('内容正在推出中...')
     else:
         if requirements != '':
             st.markdown(f"**作文要求:** {requirements}")
@@ -129,4 +176,7 @@ def show():
         article_insert_container()
 
     elif st.session_state['marking'] == 'submitted':
-        submit_func(*st.session_state['history'])
+        if st.session_state['history'] != []:
+            submit_func(*st.session_state['history'])
+        else:
+            st.write('本次提交网络错误，请重新开始新的批改')

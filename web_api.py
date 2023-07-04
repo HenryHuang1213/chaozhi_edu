@@ -38,25 +38,29 @@ class Teacher:
 
     @classmethod
     def get_note_eval(cls, content):
-        return '{}'
-        # n_prompt = NotesPrompt(content)
-        # prompt = n_prompt.get_prompt()
-        # # print(prompt)
-        # response = cls.get_completion(prompt)
-        # return response
+        # return '{}'
+        n_prompt = NotesPrompt(content)
+        prompt = n_prompt.get_prompt()
+        # print(prompt)
+        response = cls.get_completion(prompt)
+        return response
 
 # def show_example():
-#     requirements = '无'
-#     title = '我的姐姐'
-#     word_count = 300
 #     content = """
-#     大家好，很开心又跟大家见面了，钱不是主要原因，主要原因是我姐姐在学校门口潜我。从很远的地方，我就看见下她笑起来合不拢的大嘴和她的大白牙，跟手上向我摇晃的百元大钞，我就知道，她又要收买我了。
-#     我的姐姐很墨迹。一家人约好了早上7点出门，8点了我们还在家里，妈妈催她快点，她就一边描眉一边嘟嘟：“求您了，再等我个五分钟。”她一直跟我强调说则幅眼前过，不泡是罪过，每天努力地泡帅哥。
-#     我的姐姐曾经为了民族团结，硬要背上氧气瓶，去西藏找丁真和亲，还问妈妈嫁远了能支持吗，我妈让她滚一边做梦去。后来才知道人家了真是四川的。
-#     喊她吃饭也不起，她想吃的东西通常活不过第二天，回奶奶家想吃鸡肉，想就一直说鸡啄她，鸡当天晚上就上桌了。
-#     现在每天晚上除了写作业，还得给她写一篇作文。她现在正跟鬼一样追在我后面问：“写完没？写完没？这么慢，打电报都比你快，这不行，得扣钱！谁都别想阻止我出道！”
-#     唉，我是真的真的很无语。
-#     """
-#     return requirements, title, word_count, content
+#     今天是星期六，我们一家要去拜访我的姥老姥。我她的印象并不是那么深刻，只记得在小时候见过一次，后来就再也没看到了。
 #
+#     在路上，阳光明媚。这个季节明明是夏季，早上却跟春天一样。我们还看见了路边五颜六色的花儿，碧绿的草，繁茂的树。
+#
+#     到了姥姥家后，我第一个冲向的就是姥姥家的后花园，姥姥跟我说我小时候经常在这后花园玩。我到了后花园后，第一个看见的就是菜池，上面种绿油油的蔬菜。我还见了一些水果，最令人注目的是一棵大桃子树，上面都种满了桃子。我拿跑到姥姥那，问姥姥那大桃子能不能吃，姥姥答应了。我立马摘了一了，然后洗了一下，我张开嘴吃了一大口。姥姥老问我甜不甜，我立马说了一句甜。
+#
+#     直至傍晚，我要走了，临走前，我跟姥姥说：“下次我还来！”“好！”姥姥开心的说了出来
+#     """
+#     return content
+#
+# res = Teacher.get_note_eval(show_example())
+# print(res)
+#
+# j_res = json.loads(res)
+# print(j_res)
+
 
