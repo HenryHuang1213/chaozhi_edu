@@ -105,7 +105,7 @@ def submit_func(requirements, title, word_count, content):
         word_count = count_words(content)
     if st.session_state['article_type'] == 'note':
         st.markdown(f"**作文类型:** 周记")
-        st.markdown(f"**作文正文:** {content}")
+        st.markdown(f"**作文正文:** \n\n {content}")
         st.markdown('**作文评价:**')
         print_note_evaluation()
         # st.write('内容正在推出中...')

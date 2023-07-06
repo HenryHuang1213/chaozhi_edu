@@ -19,6 +19,8 @@ class Parse_CSV:
             if item[0] == '' and item[1] == '' and item[2] == '':
                 self.notes_data.append(item[3])
             else:
+                if item[2] == '':
+                    item[2] = 0
                 self.article_data.append(item)
 
     def get_article_data(self):
