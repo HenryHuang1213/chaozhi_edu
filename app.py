@@ -2,6 +2,8 @@ import streamlit as st
 import streamlit_web
 import lib_page
 import main_page
+import newpic_page
+
 
 def main():
     st.set_page_config(page_title="学生作文批改")
@@ -12,12 +14,14 @@ def main():
         st.session_state['page'] = 'main_page'
 
     pages = {
-            "main_page": main_page,
-            "library": lib_page,
-            "eval":streamlit_web
-        }
+        "main_page": main_page,
+        "library": lib_page,
+        "eval": streamlit_web,
+        "newpic": newpic_page
+    }
 
     pages[st.session_state['page']].show()
+
 
 if __name__ == "__main__":
     main()

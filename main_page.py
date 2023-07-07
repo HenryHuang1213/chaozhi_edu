@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def start_mark():
     st.session_state['marking'] = 'working'
     st.session_state['history'] = []
@@ -27,4 +28,7 @@ def show():
             st.experimental_rerun()
     if st.button("查看作文库"):
         st.session_state['page'] = 'library'
+        st.experimental_rerun()
+    if st.button("上传作文图片"):
+        st.session_state['page'] = 'newpic'
         st.experimental_rerun()
