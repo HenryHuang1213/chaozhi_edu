@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import random
 
 
 def start_mark():
@@ -17,6 +19,11 @@ def show():
         st.session_state['evaluation'] = []
     if 'article_type' not in st.session_state:
         st.session_state['article_type'] = ''
+    if 'random_id' not in st.session_state:
+        random_number = random.randint(10000000, 99999999)
+        while os.path.exists(f'zuowen/{random_number}.jpg'):
+            random_number = random.randint(10000000, 99999999)
+        st.session_state['random_id'] = random_number
 
     if st.button("开始新的批改"):
         st.session_state['page'] = 'eval'

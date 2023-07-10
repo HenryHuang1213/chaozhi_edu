@@ -1,11 +1,9 @@
 import json
 import os
-import random
 
 import streamlit as st
 from PIL import Image
 
-from parse_csv import Parse_CSV
 from web_api import Teacher
 from OCR_pkg import baidu_ocr
 
@@ -21,8 +19,8 @@ def show():
     st.title("上传作文")
     if 'lrbutton_clicked' not in st.session_state:
         st.session_state['lrbutton_clicked'] = False
-    if 'ocr_history' not in st.session_state:
-        st.session_state['ocr_history'] = ''
+    if 'oriented' not in st.session_state:
+        st.session_state['oriented'] = 0
 
     if st.session_state['marking'] == 'submitted':
         if st.button("查看刚才的批改"):
@@ -61,36 +59,53 @@ def show():
         if not st.session_state['lrbutton_clicked']:
             st.write('请确认图片是否正向')
 
-            col1, col2, col3 = st.columns(3)
+            col1, col2, col3, col4, col5 = st.columns(5)
 
-            if col1.button('向左旋转90度'):
+            if col1.button('左转'):
                 image = image.rotate(90, expand=True)
-                image.save('zuowen/temp.jpg')
+                image.save(f"zuowen/{st.session_state['random_id']}.jpg")
+                st.session_state['oriented'] = 90
 
-            if col2.button('向右旋转90度'):
+            if col2.button('回正'):
+                image = image.rotate(0, expand=True)
+                image.save(f"zuowen/{st.session_state['random_id']}.jpg")
+                st.session_state['oriented'] = 0
+
+            if col3.button('右转'):
                 image = image.rotate(-90, expand=True)
-                image.save('zuowen/temp.jpg')
+                image.save(f"zuowen/{st.session_state['random_id']}.jpg")
+                st.session_state['oriented'] = -90
 
-            if col3.button('确认'):
-                # image.save('zuowen/temp.jpg')
+            if col4.button('倒转'):
+                image = image.rotate(180, expand=True)
+                image.save(f"zuowen/{st.session_state['random_id']}.jpg")
+                st.session_state['oriented'] = 180
 
+            if col5.button('确认'):
+                image = image.rotate(st.session_state['oriented'], expand=True)
+                image.save(f"zuowen/{st.session_state['random_id']}.jpg")
                 st.session_state['lrbutton_clicked'] = True
                 st.experimental_rerun()
 
             st.image(image, caption='所上传的图片', use_column_width=True)
         else:
 
-            if st.session_state['ocr_history'] == '':
-                dir_path = os.path.dirname(os.path.realpath(__file__))
-                pic_file_path = os.path.join(dir_path, 'zuowen/temp.jpg')
-                res_raw = baidu_ocr.get_pic_text(pic_file_path)
-                st.session_state['ocr_history'] = res_raw
-            res = json.loads(st.session_state['ocr_history'])
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            pic_file_path = os.path.join(dir_path, f"zuowen/{st.session_state['random_id']}.jpg")
+            res_raw = baidu_ocr.get_pic_text(pic_file_path)
+            try:
+                res = json.loads(res_raw)
+            except:
+                res = {'文章题目': '', '文章正文': ''}
             title = res['文章题目']
             content = res['文章正文']
             st.write('识别文字结果为：')
-            st.markdown(f"*文章题目:*  《{title}》")
-            st.markdown(f"*文章正文:*  \n\n {content}")
+            if title != '':
+                st.markdown(f"*文章题目:*  《{title}》")
+            if content != '':
+                st.markdown(f"*文章正文:*  \n\n {content}")
+            else:
+                st.markdown("文章正文未能正确识别，请重新上传图片。上传后请注意调整至正确方位")
 
             if st.button('确认结果并进行批改'):
                 st.write("正在批改...")

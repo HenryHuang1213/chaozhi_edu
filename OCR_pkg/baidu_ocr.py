@@ -18,11 +18,11 @@ def get_ocr_text_from_file(image_file):
         img = base64.b64encode(f.read())
         params = {"image": img}
         response = requests.post(request_url, data=params, headers=headers)
-
         words_txt = ""
         if response:
             try:
                 res = response.json()
+                # print(res)
                 while res.get('error_code') == 110:
                     ocr_c.renew_config()
                     request_url, headers = ocr_c.get_req_config()
