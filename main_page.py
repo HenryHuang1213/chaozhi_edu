@@ -24,6 +24,8 @@ def show():
         while os.path.exists(f'zuowen/{random_number}.jpg'):
             random_number = random.randint(10000000, 99999999)
         st.session_state['random_id'] = random_number
+    if 'Evaluation_Cost_Time' not in st.session_state:
+        st.session_state['Evaluation_Cost_Time'] = 0
 
     if st.button("开始新的批改"):
         st.session_state['page'] = 'eval'

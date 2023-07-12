@@ -1,4 +1,7 @@
 import base64
+import time
+import streamlit as st
+
 import requests
 from .ocr_config import OCR_Config
 from .optimize_text import get_completion
@@ -12,12 +15,22 @@ import glob
 # i=0
 # for image_file in image_files:
 def get_ocr_text_from_file(image_file):
+    start_time = time.time()
+    # print("OCR LIB: start time = ", start_time)
     ocr_c = OCR_Config()
     request_url, headers = ocr_c.get_req_config()
     with open(image_file, 'rb') as f:
         img = base64.b64encode(f.read())
         params = {"image": img}
+
+        read_time = time.time()
+        # print("OCR LIB: read time = ", read_time)
+        # print(f'Read Cost Time: {read_time - start_time}s')
         response = requests.post(request_url, data=params, headers=headers)
+
+        res_time = time.time()
+        # print("OCR LIB: ocr response time = ", res_time)
+        # print(f'Response Cost Time: {res_time - read_time}s')
         words_txt = ""
         if response:
             try:
@@ -34,6 +47,11 @@ def get_ocr_text_from_file(image_file):
             # if words_result_list is not None:
             for words in words_result_list:
                 words_txt += words.get("words") + "\n"
+        pro_time = time.time()
+        # print("OCR LIB: process time = ", pro_time)
+        # print(f'Process Cost Time: {pro_time - res_time}s')
+        # print(f'OCR LIB Total Cost Time: {pro_time - start_time}s')
+        # st.write(f'OCR LIB Cost Time: {pro_time - start_time}s')
         return words_txt
 
         # 保存为txt文件

@@ -1,10 +1,12 @@
 import json
+import time
 
 import openai
 
 from article_prompt import ArticlePrompt
 from notes_prompt import NotesPrompt
 
+import streamlit as st
 
 class Teacher:
 
@@ -29,20 +31,26 @@ class Teacher:
 
     @classmethod
     def get_article_eval(cls, requirements, title, word_count, content):
-
+        start_time = time.time()
         a_prompt = ArticlePrompt(requirements, title, word_count, content)
         prompt = a_prompt.get_prompt()
         # print(prompt)
         response = cls.get_completion(prompt)
+        end_time = time.time()
+
+        st.session_state['Evaluation_Cost_Time'] = end_time-start_time
         return response
 
     @classmethod
     def get_note_eval(cls, content):
+        start_time = time.time()
         # return '{}'
         n_prompt = NotesPrompt(content)
         prompt = n_prompt.get_prompt()
         # print(prompt)
         response = cls.get_completion(prompt)
+        end_time = time.time()
+        st.session_state['Evaluation_Cost_Time'] = end_time-start_time
         return response
 
 # def show_example():

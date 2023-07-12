@@ -6,6 +6,7 @@ from PIL import Image
 
 from web_api import Teacher
 from OCR_pkg import baidu_ocr
+import time
 
 
 def pic_eval(title, content):
@@ -14,11 +15,16 @@ def pic_eval(title, content):
     # print(evaluation)
     st.session_state['evaluation'] = json.loads(evaluation)
 
+# def get_text_from_pic(pic_file_path):
+#     res = baidu_ocr.get_pic_text(pic_file_path)
+#     return res
 
 def show():
     st.title("上传作文")
     if 'lrbutton_clicked' not in st.session_state:
         st.session_state['lrbutton_clicked'] = False
+    if 'ocr_history' not in st.session_state:
+        st.session_state['ocr_history'] = ''
     if 'oriented' not in st.session_state:
         st.session_state['oriented'] = 0
 
@@ -89,14 +95,36 @@ def show():
 
             st.image(image, caption='所上传的图片', use_column_width=True)
         else:
+            start_time = time.time()
+            # print("PAGE: start time = ", start_time)
+            if st.session_state['ocr_history'] == '':
+                dir_path = os.path.dirname(os.path.realpath(__file__))
+                pic_file_path = os.path.join(dir_path, f"zuowen/{st.session_state['random_id']}.jpg")
 
-            dir_path = os.path.dirname(os.path.realpath(__file__))
-            pic_file_path = os.path.join(dir_path, f"zuowen/{st.session_state['random_id']}.jpg")
-            res_raw = baidu_ocr.get_pic_text(pic_file_path)
+                start_time = time.time()
+                st.session_state['ocr_history'] = baidu_ocr.get_pic_text(pic_file_path)
+                # ocr_result = st.cache_data("ocr_result")
+
+                end_time = time.time()
+                st.write(f'OCR GPT Cost Time: {end_time - start_time}s')
+            # if ocr_result is None or pic_file_path not in ocr_result:
+                # 如果没有缓存，那么计算OCR结果并保存到缓存
+                # ocr_result = {pic_file_path: get_text_from_pic(pic_file_path)}
+                # st.cache_data("ocr_result", ocr_result)
+
+            res_raw = st.session_state['ocr_history']
+
+            # res_raw = get_text_from_pic(pic_file_path)
+                # st.session_state['ocr_history'] = res_raw
+
             try:
                 res = json.loads(res_raw)
             except:
                 res = {'文章题目': '', '文章正文': ''}
+            end_time = time.time()
+            # print("PAGE: end process time = ", end_time)
+            # print(f'Total Cost Time: {end_time - start_time}s')
+            st.write(f'Total Cost Time: {end_time - start_time}s')
             title = res['文章题目']
             content = res['文章正文']
             st.write('识别文字结果为：')
@@ -113,4 +141,5 @@ def show():
                 st.session_state['history'] = ['', title, 0, content]
                 st.session_state['page'] = 'eval'
                 st.session_state['marking'] = 'submitted'
+                st.session_state['ocr_history'] = ''
                 st.experimental_rerun()

@@ -6,6 +6,8 @@ import sample_article
 
 
 def print_article_evaluation():
+    st.write(f"Evaluation_Cost_Time : {st.session_state['Evaluation_Cost_Time']}")
+
     response = st.session_state['evaluation']
     st.markdown(f"*作文题目:*  《{response['作文题目']}》")
     st.markdown(f"*核心内容:*  {response['作文核心内容']}")
