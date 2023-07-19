@@ -79,6 +79,8 @@ def show():
         st.session_state['ocr_history'] = ''
     if 'oriented' not in st.session_state:
         st.session_state['oriented'] = dict()
+    if 'upload_button_visible' not in st.session_state:
+        st.session_state['upload_button_visible'] = True
 
     if st.session_state['marking'] == 'submitted':
         if st.button("查看刚才的批改"):
@@ -109,12 +111,12 @@ def show():
         for i in range(int(option)):
             process_image(i+1)
 
-    if st.button('确认图片上传完整'):
+        if st.button('确认图片上传完整'):
+            st.session_state['upload_button_visible'] = True
+            st.session_state['lrbutton_clicked'] = True
+            st.experimental_rerun()
 
-        st.session_state['lrbutton_clicked'] = True
-        # st.experimental_rerun()
-
-    # else:
+    if st.session_state['lrbutton_clicked']:
         start_time = time.time()
         # print("PAGE: start time = ", start_time)
         if st.session_state['ocr_history'] == '':
@@ -163,14 +165,16 @@ def show():
 
 
     if st.session_state['ocr_history'] != '':
-
-        if st.button('上传结果不对，重新上传'):
-            st.session_state['lrbutton_clicked'] = False
-            st.session_state['ocr_history'] = ''
-            st.experimental_rerun()
+        if st.session_state['upload_button_visible']:
+            if st.button('上传结果不对，重新上传'):
+                st.session_state['lrbutton_clicked'] = False
+                st.session_state['ocr_history'] = ''
+                st.session_state['upload_button_visible'] = False
+                st.experimental_rerun()
 
         if st.button('确认结果并进行批改'):
             st.write("正在批改...")
+            st.session_state['lrbutton_clicked'] = False
             res = json.loads(st.session_state['ocr_history'])
             title = res['文章题目']
             content = res['文章正文']
