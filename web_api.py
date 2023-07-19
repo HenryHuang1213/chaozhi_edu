@@ -12,6 +12,7 @@ class Teacher:
 
     @staticmethod
     def get_completion(prompt, model="gpt-4"):
+        openai.organization = "org-YtXb1vm6BeYmYEPTIAG61m59"
         openai.api_key_path = "api.key"
         messages = [{"role": "user", "content": prompt}]
 

@@ -37,8 +37,7 @@ class OCR_Config():
         return request_url, headers
 
     def get_host_config(self):
-        host = self.config['CONNECT']['host']
-
+        host = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=GKShutlLzS4rhNL5gOdfnmBe&client_secret=V3MNHp1RQ0jiOMV5NYgsPrUXZ2lb8SnY'
         return host
 
     def renew_config(self):

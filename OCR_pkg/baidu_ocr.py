@@ -42,7 +42,7 @@ def get_ocr_text_from_file(image_file):
                     res = requests.post(request_url, data=params, headers=headers).json()
                 words_result_list = response.json().get("words_result")
             except:
-                words_result_list = []
+                words_result_list = ['']
                 print(f"There is an error when OCR the image: {image_file}")
             # if words_result_list is not None:
             for words in words_result_list:
@@ -91,7 +91,8 @@ def get_pic_text(pic_file, pic_type='file'):
         raw_text_word = get_ocr_text_from_file(pic_file)
     else:
         raw_text_word = get_ocr_text_from_image(pic_file)
-    return get_completion(raw_text_word)
+    return raw_text_word
+    # return get_completion(raw_text_word)
 
 # text = get_pic_text("../zuowen/temp.jpg")
 # print(text)

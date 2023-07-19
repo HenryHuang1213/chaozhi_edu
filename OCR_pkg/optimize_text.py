@@ -26,6 +26,7 @@ def get_completion(text, model="gpt-4"):
     """
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
+    openai.organization = "org-YtXb1vm6BeYmYEPTIAG61m59"
     openai.api_key_path = os.path.join(dir_path, '../api.key')
     messages = [{"role": "user", "content": prompt}]
 
