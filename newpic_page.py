@@ -4,7 +4,7 @@ import os
 import streamlit as st
 from PIL import Image
 
-from web_api import Teacher
+from primary_school_pkg.web_api import Teacher
 from OCR_pkg import baidu_ocr, optimize_text
 import time
 
@@ -13,7 +13,7 @@ def pic_eval(title, content):
     evaluation = Teacher.get_article_eval('', title, 0, content)
     st.session_state['article_type'] = 'article'
     # print(evaluation)
-    st.session_state['evaluation'] = json.loads(evaluation)
+    st.session_state['primary_evaluation'] = json.loads(evaluation)
 
 def process_image(num):
     uploaded_file = st.file_uploader(f"请选择需要上传的第{num}图片（图片大小不能超过20MB）", type=['png', 'jpg', 'jpeg'])
@@ -72,7 +72,7 @@ def process_image(num):
 
 
 def show():
-    st.title("上传作文")
+    st.title("上传小学作文")
     if 'lrbutton_clicked' not in st.session_state:
         st.session_state['lrbutton_clicked'] = False
     if 'ocr_history' not in st.session_state:
@@ -82,18 +82,21 @@ def show():
     if 'upload_button_visible' not in st.session_state:
         st.session_state['upload_button_visible'] = True
 
-    if st.session_state['marking'] == 'submitted':
+    if st.session_state['primary_marking'] == 'submitted':
         if st.button("查看刚才的批改"):
-            st.session_state['page'] = 'eval'
+            st.session_state['page'] = 'primary_school'
             st.experimental_rerun()
     else:
         if st.button("开始新的批改"):
-            st.session_state['page'] = 'eval'
+            st.session_state['page'] = 'primary_school'
             st.experimental_rerun()
     if st.button("回到主页"):
         st.session_state['page'] = 'main_page'
         st.experimental_rerun()
-    if st.button("查看作文库"):
+    if st.button("回到小学批改主页"):
+        st.session_state['page'] = 'primary_school_main'
+        st.experimental_rerun()
+    if st.button("查看小学作文库"):
         st.session_state['page'] = 'library'
         st.experimental_rerun()
 
@@ -179,9 +182,9 @@ def show():
             title = res['文章题目']
             content = res['文章正文']
             pic_eval(title, content)
-            st.session_state['history'] = ['', title, 0, content]
-            st.session_state['page'] = 'eval'
-            st.session_state['marking'] = 'submitted'
+            st.session_state['primary_history'] = ['', title, 0, content]
+            st.session_state['page'] = 'primary_school'
+            st.session_state['primary_marking'] = 'submitted'
             st.session_state['ocr_history'] = ''
             st.experimental_rerun()
 

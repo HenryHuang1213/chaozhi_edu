@@ -1,10 +1,11 @@
 import json
+import os
 import time
 
 import openai
 
-from article_prompt import ArticlePrompt
-from notes_prompt import NotesPrompt
+from .article_prompt import ArticlePrompt
+from .notes_prompt import NotesPrompt
 
 import streamlit as st
 
@@ -12,8 +13,9 @@ class Teacher:
 
     @staticmethod
     def get_completion(prompt, model="gpt-4"):
+        dir_path = os.path.dirname(os.path.realpath(__file__))
         openai.organization = "org-YtXb1vm6BeYmYEPTIAG61m59"
-        openai.api_key_path = "api.key"
+        openai.api_key_path = os.path.join(dir_path, '../api.key')
         messages = [{"role": "user", "content": prompt}]
 
         response = openai.ChatCompletion.create(

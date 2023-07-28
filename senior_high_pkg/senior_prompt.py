@@ -1,5 +1,5 @@
 
-class ArticlePrompt:
+class SeniorPrompt:
 
     def __init__(self, requirements, title, word_count, content):
         self.requirements = requirements
@@ -90,6 +90,9 @@ class ArticlePrompt:
         7 - 概念不清 ： 指句子中词语的概念不清，属性不当，范围大小归属混乱。
         8 - 不合逻辑不合事理 ： 句子中某些词语概念不清，使用错误，或表达的意思不符合事理，也易造成病句。
         9 - 指代不明 ： 指句子中出现多个人或状物时，指代不明确，含混不清。
+
+    你需要学习小学语文的好句类型和方法:
+        拟人句，比喻句，夸张句，排比句，双重否定句，反问句，神态描写，外貌描写，动作描写，语言描写，心理描写
 
     你首先需要完成以下步骤：
         1 - 阅读文章，并概括主题和中心思想。

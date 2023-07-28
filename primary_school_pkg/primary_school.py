@@ -1,14 +1,14 @@
 import json
 
 import streamlit as st
-from web_api import Teacher
-import sample_article
+from .web_api import Teacher
+from . import primary_sample_article
 
 
 def print_article_evaluation():
     st.write(f"Evaluation_Cost_Time : {st.session_state['Evaluation_Cost_Time']}")
 
-    response = st.session_state['evaluation']
+    response = st.session_state['primary_evaluation']
     st.markdown(f"*作文题目:*  《{response['作文题目']}》")
     st.markdown(f"*核心内容:*  {response['作文核心内容']}")
     st.markdown(f"*亮点:*  {response['亮点']}")
@@ -44,8 +44,8 @@ def print_article_evaluation():
     st.markdown("*评分:*")
 
     total_score = sum([i['评分'] for i in response['评分'].values()])
-    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score}")
-    full_score = ['10', '15', '15', '15', '15', '15', '15']
+    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score} /30")
+    full_score = ['3', '5', '5', '5', '5', '4', '3']
     for k, v in response['评分'].items():
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{k}:")
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / {full_score.pop(0)}")
@@ -54,7 +54,7 @@ def print_article_evaluation():
 
 
 def print_note_evaluation():
-    response = st.session_state['evaluation']
+    response = st.session_state['primary_evaluation']
     st.markdown(f"*主要内容:*  {response['主要内容']}")
     st.markdown(f"*亮点:*  {response['亮点']}")
     st.markdown(f"*错别字:*  ")
@@ -89,10 +89,10 @@ def print_note_evaluation():
     st.markdown("*评分:*")
 
     total_score = sum([i['评分'] for i in response['评分'].values()])
-    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score}")
+    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score} /30")
     for k, v in response['评分'].items():
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{k}:")
-        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / 20")
+        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / 6")
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理由：{v['理由']}")
 
 
@@ -121,7 +121,7 @@ def submit_func(requirements, title, word_count, content):
         st.markdown(f"**作文正文:** {content}")
         st.markdown('**作文评价:**')
         print_article_evaluation()
-    st.session_state['history'] = [requirements, title, word_count, content]
+    st.session_state['primary_history'] = [requirements, title, word_count, content]
 
 
 def get_evaluation(requirements, title, word_count, content):
@@ -132,7 +132,7 @@ def get_evaluation(requirements, title, word_count, content):
         evaluation = Teacher.get_article_eval(requirements, title, word_count, content)
         st.session_state['article_type'] = 'article'
     # print(evaluation)
-    st.session_state['evaluation'] = json.loads(evaluation)
+    st.session_state['primary_evaluation'] = json.loads(evaluation)
 
 
 def article_insert_container():
@@ -146,18 +146,18 @@ def article_insert_container():
             submit_button = st.form_submit_button(label='提交')
             example1_button = st.form_submit_button(label='示例批改1')
             example2_button = st.form_submit_button(label='示例批改2')
-            # st.session_state['history'] = [requirements_input, title_input, word_count_input, content_input]
+            # st.session_state['primary_history'] = [requirements_input, title_input, word_count_input, content_input]
     temp = 0
     if submit_button:
-        st.session_state['marking'] = 'submitted'
+        st.session_state['primary_marking'] = 'submitted'
         temp = 1
     elif example1_button:
-        st.session_state['marking'] = 'submitted'
-        requirements_input, title_input, word_count_input, content_input = sample_article.show_example1()
+        st.session_state['primary_marking'] = 'submitted'
+        requirements_input, title_input, word_count_input, content_input = primary_sample_article.show_example1()
         temp = 1
     elif example2_button:
-        st.session_state['marking'] = 'submitted'
-        requirements_input, title_input, word_count_input, content_input = sample_article.show_example2()
+        st.session_state['primary_marking'] = 'submitted'
+        requirements_input, title_input, word_count_input, content_input = primary_sample_article.show_example2()
         temp = 1
 
     if temp:
@@ -167,18 +167,22 @@ def article_insert_container():
 
 
 def show():
+    st.title("小学作文批改")
     if st.button("回到主页"):
         st.session_state['page'] = 'main_page'
         st.experimental_rerun()
-    if st.button("查看作文库"):
+    if st.button("回到小学批改主页"):
+        st.session_state['page'] = 'primary_school_main'
+        st.experimental_rerun()
+    if st.button("查看小学作文库"):
         st.session_state['page'] = 'library'
         st.experimental_rerun()
 
-    if st.session_state['marking'] == 'working':
+    if st.session_state['primary_marking'] == 'working':
         article_insert_container()
 
-    elif st.session_state['marking'] == 'submitted':
-        if st.session_state['history'] != []:
-            submit_func(*st.session_state['history'])
+    elif st.session_state['primary_marking'] == 'submitted':
+        if st.session_state['primary_history'] != []:
+            submit_func(*st.session_state['primary_history'])
         else:
             st.write('本次提交网络错误，请重新开始新的批改')
