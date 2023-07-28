@@ -17,3 +17,8 @@ def show():
             st.session_state['page'] = 'junior_high'
             st.experimental_rerun()
 
+    if st.button("上传作文图片"):
+        st.session_state['page'] = 'junior_pic_page'
+        st.experimental_rerun()
+
+

@@ -22,6 +22,20 @@ def print_article_evaluation():
                 f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原句：{response['错别字']['错别字内容'][str(i)]['原句']}")
             st.write(
                 f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确字：{response['错别字']['错别字内容'][str(i)]['正确字']}")
+    else:
+        st.write("&nbsp;&nbsp;&nbsp;&nbsp;没有错别字")
+    st.markdown(f"*标点符号:*  ")
+    if response['标点符号']['错误标点总数']:
+        for i in range(1, response['标点符号']['错误标点总数'] + 1):
+            st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{i}:")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错误标点：{response['标点符号']['错误标点内容'][str(i)]['错误标点']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原句：{response['标点符号']['错误标点内容'][str(i)]['原句']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确标点：{response['标点符号']['错误标点内容'][str(i)]['正确标点']}")
+    else:
+        st.write("&nbsp;&nbsp;&nbsp;&nbsp;标点符号使用正确")
     st.markdown(f"*病句:*  ")
     if response['病句']['病句总数']:
         for i in range(1, response['病句']['病句总数'] + 1):
@@ -45,7 +59,7 @@ def print_article_evaluation():
 
     total_score = sum([i['评分'] for i in response['评分'].values()])
     st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score} /30")
-    full_score = ['3', '5', '5', '5', '5', '4', '3']
+    full_score = ['3', '5', '5', '5', '4', '3', '3', '2']
     for k, v in response['评分'].items():
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{k}:")
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / {full_score.pop(0)}")
@@ -67,6 +81,20 @@ def print_note_evaluation():
                 f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原句：{response['错别字']['错别字内容'][str(i)]['原句']}")
             st.write(
                 f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确字：{response['错别字']['错别字内容'][str(i)]['正确字']}")
+    else:
+        st.write("&nbsp;&nbsp;&nbsp;&nbsp;没有错别字")
+    st.markdown(f"*标点符号:*  ")
+    if response['标点符号']['错误标点总数']:
+        for i in range(1, response['标点符号']['错误标点总数'] + 1):
+            st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{i}:")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错误标点：{response['标点符号']['错误标点内容'][str(i)]['错误标点']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原句：{response['标点符号']['错误标点内容'][str(i)]['原句']}")
+            st.write(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确标点：{response['标点符号']['错误标点内容'][str(i)]['正确标点']}")
+    else:
+        st.write("&nbsp;&nbsp;&nbsp;&nbsp;标点符号使用正确")
     st.markdown(f"*病句:*  ")
     if response['病句']['病句总数']:
         for i in range(1, response['病句']['病句总数'] + 1):
@@ -77,6 +105,8 @@ def print_note_evaluation():
                 f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病句问题：{response['病句']['病句内容'][str(i)]['病句问题']}")
             st.write(
                 f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改意见：{response['病句']['病句内容'][str(i)]['修改意见']}")
+    else:
+        st.write("&nbsp;&nbsp;&nbsp;&nbsp;没有病句")
     st.markdown(f"*好句:* ")
     if response['好句']['好句总数']:
         for i in range(1, response['好句']['好句总数'] + 1):
@@ -92,7 +122,7 @@ def print_note_evaluation():
     st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;总分: {total_score} /30")
     for k, v in response['评分'].items():
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{k}:")
-        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / 6")
+        st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分数：{v['评分']} / 5")
         st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理由：{v['理由']}")
 
 

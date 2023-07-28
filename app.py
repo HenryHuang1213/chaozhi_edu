@@ -3,8 +3,8 @@ from primary_school_pkg import primary_school, primary_school_main
 import lib_page
 import main_page
 import newpic_page
-from junior_high_pkg import junior_high, junior_high_main
-from senior_high_pkg import senior_high, senior_high_main
+from junior_high_pkg import junior_high, junior_high_main, junior_pic_page
+from senior_high_pkg import senior_high, senior_high_main, senior_pic_page
 
 
 def main():
@@ -24,7 +24,9 @@ def main():
         "primary_school": primary_school,
         "junior_high": junior_high,
         "senior_high": senior_high,
-        "newpic": newpic_page
+        "newpic": newpic_page,
+        "junior_pic_page": junior_pic_page,
+        "senior_pic_page": senior_pic_page,
     }
 
     pages[st.session_state['page']].show()
