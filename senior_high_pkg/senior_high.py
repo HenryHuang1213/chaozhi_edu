@@ -89,8 +89,8 @@ def article_insert_container():
 
             submit_button = st.form_submit_button(label='提交')
             example1_button = st.form_submit_button(label='示例批改1')
-            example2_button = st.form_submit_button(label='示例批改2')
-            example3_button = st.form_submit_button(label='示例批改3')
+            # example2_button = st.form_submit_button(label='示例批改2')
+            # example3_button = st.form_submit_button(label='示例批改3')
             # st.session_state['senior_history'] = [requirements_input, title_input, word_count_input, content_input]
     temp = 0
     if submit_button:
@@ -100,14 +100,14 @@ def article_insert_container():
         st.session_state['senior_marking'] = 'submitted'
         requirements_input, title_input, word_count_input, content_input = senior_sample_article.show_example1()
         temp = 1
-    elif example2_button:
-        st.session_state['senior_marking'] = 'submitted'
-        requirements_input, title_input, word_count_input, content_input = senior_sample_article.show_example2()
-        temp = 1
-    elif example3_button:
-        st.session_state['senior_marking'] = 'submitted'
-        requirements_input, title_input, word_count_input, content_input = senior_sample_article.show_example3()
-        temp = 1
+    # elif example2_button:
+    #     st.session_state['senior_marking'] = 'submitted'
+    #     requirements_input, title_input, word_count_input, content_input = senior_sample_article.show_example2()
+    #     temp = 1
+    # elif example3_button:
+    #     st.session_state['senior_marking'] = 'submitted'
+    #     requirements_input, title_input, word_count_input, content_input = senior_sample_article.show_example3()
+    #     temp = 1
 
 
     if temp:
